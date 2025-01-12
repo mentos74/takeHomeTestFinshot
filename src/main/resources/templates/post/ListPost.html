@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<h1> Bulletin List Post </h1>
+<table>
+
+    <tr>
+        <td><b>Post Id</b></td>
+        <td><b>Post Title</b></td>
+        <td><b>Post Author </b></td>
+        <td><b>Post  Content</b></td>
+        <td><b>Post  View</b></td>
+        <td><b>Post  Created</b></td>
+        <td><b>Post  Modified</b></td>
+    </tr>
+    <tr th:each="post: ${posts}">
+        <td th:text="${post.postId}"></td>
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.author}"></td>
+        <td th:text="${post.content}"></td>
+        <td th:text="${post.views}"></td>
+        <td th:text="${post.createdAt}"></td>
+        <td th:text="${post.modifiedAt}"></td>
+    </tr>
+
+
+</table>
+
+</body>
+
+</html>
