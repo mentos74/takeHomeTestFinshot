@@ -8,6 +8,7 @@ import com.finshot.takehometest.repository.PostRepository;
 import com.finshot.takehometest.services.PostServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,6 @@ public class PostServicesImpl implements PostServices {
 
     @Autowired
     PostRepository postRepository;
-
 
 
     @Override
@@ -41,7 +41,6 @@ public class PostServicesImpl implements PostServices {
         post.setAuthor(dto.getAuthor());
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-
         postRepository.save(post);
 
     }
@@ -54,6 +53,25 @@ public class PostServicesImpl implements PostServices {
     @Override
     public void deletePost(String id) {
 
+    }
+
+    @Override
+    public PostResponseDTO viewPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Post not found"));
+        post.setViews(post.getViews() );
+
+        postRepository.save(post);
+
+        PostResponseDTO dto = new PostResponseDTO();
+        dto.setPostId(post.getPostId());
+        dto.setTitle(post.getTitle());
+        dto.setContent(post.getContent());
+        dto.setAuthor(post.getAuthor());
+        dto.setViews(post.getViews());
+        dto.setCreatedAt(post.getCreatedAt());
+        dto.setModifiedAt(post.getModifiedAt());
+        return dto;
     }
 
 }

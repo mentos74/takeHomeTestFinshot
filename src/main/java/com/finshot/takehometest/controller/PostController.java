@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -21,12 +22,12 @@ import java.util.List;
 public class PostController {
 
     @Autowired
-     PostServices postServices;
+    PostServices postServices;
 
     @GetMapping("/list")
     public String findAllPost(Model model) {
         List<PostResponseDTO> posts = postServices.listPost();
-        model.addAttribute("posts",posts);
+        model.addAttribute("posts", posts);
         return "/post/list";
     }
 
@@ -40,16 +41,23 @@ public class PostController {
     @PostMapping("/add")
     public String addNewPost(@ModelAttribute("postCreateRequestDTO") @Valid PostCreateRequestDTO postCreateRequestDTO,
                              BindingResult bindingResult,
-                             Errors errors ,
+                             Errors errors,
                              Model model) {
 
-        if(errors.hasErrors()){
-            model.addAttribute("postCreateRequestDTO",postCreateRequestDTO);
+        if (errors.hasErrors()) {
+            model.addAttribute("postCreateRequestDTO", postCreateRequestDTO);
             return "/post/add";
         }
 
         postServices.createNewPost(postCreateRequestDTO);
         return "redirect:/list";
+    }
+
+    @GetMapping("/post/{id}")
+    public String viewPost(@PathVariable Long id, Model model) {
+        PostResponseDTO post = postServices.viewPost(id);
+        model.addAttribute("post", post);
+        return "/post/view";
     }
 
 

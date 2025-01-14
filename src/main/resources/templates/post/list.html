@@ -1,35 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <title>Post List</title>
 </head>
 <body>
-
-<h1> Bulletin List Post </h1>
+<h1>Post List</h1>
 <table>
-
+    <thead>
     <tr>
-        <td><b>Post Id</b></td>
-        <td><b>Post Title</b></td>
-        <td><b>Post Author </b></td>
-        <td><b>Post  Content</b></td>
-        <td><b>Post  View</b></td>
-        <td><b>Post  Created</b></td>
-        <td><b>Post  Modified</b></td>
+        <th>No</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Views</th>
+        <th>Date Created</th>
     </tr>
-    <tr th:each="post: ${posts}">
-        <td th:text="${post.postId}"></td>
-        <td th:text="${post.title}"></td>
+    </thead>
+    <tbody>
+    <tr th:each="post, stat : ${posts}">
+        <td th:text="${stat.index + 1}"></td>
+        <td><a th:href="@{'/post/' + ${post.postId}}" th:text="${post.title}"></a></td>
         <td th:text="${post.author}"></td>
-        <td th:text="${post.content}"></td>
         <td th:text="${post.views}"></td>
         <td th:text="${post.createdAt}"></td>
-        <td th:text="${post.modifiedAt}"></td>
     </tr>
-
-
+    </tbody>
 </table>
-
+<a href="/add">Create New Post</a>
 </body>
-
 </html>

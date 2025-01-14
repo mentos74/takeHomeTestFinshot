@@ -16,5 +16,6 @@ public interface PostServices {
     public void createNewPost(PostCreateRequestDTO dto);
     public void updatePost(PostUpdateRequestDTO dto);
     public void deletePost(String id);
+    public PostResponseDTO viewPost(Long id);
 
 }
