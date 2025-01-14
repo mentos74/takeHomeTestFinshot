@@ -1,6 +1,8 @@
 package com.finshot.takehometest.services.impl;
 
+import com.finshot.takehometest.dto.PostCreateRequestDTO;
 import com.finshot.takehometest.dto.PostResponseDTO;
+import com.finshot.takehometest.dto.PostUpdateRequestDTO;
 import com.finshot.takehometest.entity.Post;
 import com.finshot.takehometest.repository.PostRepository;
 import com.finshot.takehometest.services.PostServices;
@@ -17,10 +19,6 @@ public class PostServicesImpl implements PostServices {
     PostRepository postRepository;
 
 
-    @Override
-    public List<Post> findAll() {
-        return postRepository.findAll();
-    }
 
     @Override
     public List<PostResponseDTO> listPost() {
@@ -35,6 +33,27 @@ public class PostServicesImpl implements PostServices {
             dto.setModifiedAt(post.getModifiedAt());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createNewPost(PostCreateRequestDTO dto) {
+        Post post = new Post();
+        post.setAuthor(dto.getAuthor());
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+
+        postRepository.save(post);
+
+    }
+
+    @Override
+    public void updatePost(PostUpdateRequestDTO dto) {
+
+    }
+
+    @Override
+    public void deletePost(String id) {
+
     }
 
 }
