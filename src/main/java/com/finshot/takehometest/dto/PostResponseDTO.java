@@ -23,4 +23,8 @@ public class PostResponseDTO {
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
+
+    private String formattedCreatedDate;
+
+    private String formattedModifiedAt;
 }

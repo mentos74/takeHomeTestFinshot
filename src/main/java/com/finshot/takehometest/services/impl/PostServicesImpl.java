@@ -9,6 +9,7 @@ import com.finshot.takehometest.services.PostServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,12 +48,21 @@ public class PostServicesImpl implements PostServices {
 
     @Override
     public void updatePost(PostUpdateRequestDTO dto) {
+        Post post = postRepository.findById(dto.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        postRepository.save(post);
     }
 
     @Override
-    public void deletePost(String id) {
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
+     //TODO tambahin soft delete
+        postRepository.delete(post);
     }
 
     @Override
@@ -71,6 +81,8 @@ public class PostServicesImpl implements PostServices {
         dto.setViews(post.getViews());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setModifiedAt(post.getModifiedAt());
+        dto.setFormattedCreatedDate(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        dto.setFormattedModifiedAt(post.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return dto;
     }
 

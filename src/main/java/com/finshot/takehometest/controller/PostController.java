@@ -2,6 +2,7 @@ package com.finshot.takehometest.controller;
 
 import com.finshot.takehometest.dto.PostCreateRequestDTO;
 import com.finshot.takehometest.dto.PostResponseDTO;
+import com.finshot.takehometest.dto.PostUpdateRequestDTO;
 import jakarta.validation.Valid;
 import com.finshot.takehometest.services.PostServices;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,38 @@ public class PostController {
         PostResponseDTO post = postServices.viewPost(id);
         model.addAttribute("post", post);
         return "/post/view";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editPost(@PathVariable Long id, Model model) {
+        PostResponseDTO post = postServices.viewPost(id);
+
+        PostUpdateRequestDTO updateRequest = new PostUpdateRequestDTO();
+        updateRequest.setPostId(post.getPostId());
+        updateRequest.setTitle(post.getTitle());
+        updateRequest.setContent(post.getContent());
+        updateRequest.setContent(post.getAuthor());
+        
+        model.addAttribute("postUpdateRequestDTO", updateRequest);
+        return "/post/edit";
+    }
+
+    @PostMapping("/edit")
+    public String updatePost(@ModelAttribute("postUpdateRequestDTO") @Valid PostUpdateRequestDTO updateRequestDTO,
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("postUpdateRequestDTO", updateRequestDTO);
+            return "/post/edit";
+        }
+
+        postServices.updatePost(updateRequestDTO);
+        return "redirect:/list";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deletePost(@PathVariable Long id) {
+        postServices.deletePost(id);
+        return "redirect:/list";
     }
 
 
