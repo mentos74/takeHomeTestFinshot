@@ -7,8 +7,9 @@
 </head>
 
 <body class="container mt-5">
-<h1 class="mb-4">Edit Post</h1>
-<form method="POST" th:action="@{'/edit/' + ${postUpdateRequestDTO.postId}}" th:object="${postUpdateRequestDTO}" class="needs-validation" novalidate>
+<h1 class="mb-4 text-center">Edit Post</h1>
+<form method="POST" th:action="@{'/edit/' + ${postUpdateRequestDTO.postId}}" th:object="${postUpdateRequestDTO}"
+      class="needs-validation" novalidate>
     <div class="mb-3">
         <label for="author" class="form-label"><b>Author Name</b></label>
         <input type="text" id="author" name="author" class="form-control" th:field="*{author}" maxlength="10" required>
@@ -29,9 +30,113 @@
         <textarea id="content" name="content" rows="5" class="form-control" th:field="*{content}" required></textarea>
         <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></div>
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a th:href="@{/list}" class="btn btn-secondary">Cancel</a>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="submit" class="btn btn-primary ms-2">Save</button>
+        <a th:href="@{'/view/' +${postUpdateRequestDTO.postId}}" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const titleInput = document.getElementById("title");
+        const authorInput = document.getElementById("author");
+        const maxMixedLength = 50;
+        const maxKoreanLength = 50;
+        const maxEnglishLength = 100;
+        const maxAuthorLength = 10;
+
+        function validateLength(value) {
+            let koreanCount = 0;
+            let totalCount = 0;
+
+            for (let char of value) {
+                if (char.match(/[\u3131-\uD79D]/)) {
+                    koreanCount += 1;
+                }
+                totalCount += 1;
+            }
+
+            return { koreanCount, totalCount };
+        }
+
+        function truncateToMaxLength(value, maxLength) {
+            let koreanCount = 0;
+            let totalCount = 0;
+
+            for (let i = 0; i < value.length; i++) {
+                const char = value[i];
+                if (char.match(/[\u3131-\uD79D]/)) {
+                    koreanCount += 1;
+                }
+                totalCount += 1;
+
+                if (totalCount > maxLength) {
+                    return value.slice(0, i);
+                }
+            }
+            return value;
+        }
+
+
+        titleInput.addEventListener("input", function () {
+            const value = titleInput.value;
+            const { koreanCount, totalCount } = validateLength(value);
+
+            if (
+                (koreanCount > 0 && totalCount > maxMixedLength) ||
+                (koreanCount > 0 && koreanCount > maxKoreanLength) ||
+                (koreanCount === 0 && totalCount > maxEnglishLength)
+            ) {
+                alert("Title too long! Please adhere to the character limits.");
+                titleInput.value = truncateToMaxLength(value, maxMixedLength);
+            }
+        });
+
+        titleInput.addEventListener("paste", function (event) {
+            const pasteData = (event.clipboardData || window.clipboardData).getData("text");
+            const currentValue = titleInput.value;
+            const newValue = currentValue + pasteData;
+
+            const { koreanCount, totalCount } = validateLength(newValue);
+
+            if (
+                (koreanCount > 0 && totalCount > maxMixedLength) ||
+                (koreanCount > 0 && koreanCount > maxKoreanLength) ||
+                (koreanCount === 0 && totalCount > maxEnglishLength)
+            ) {
+                alert("Title too long! Maximum 50 Korean characters or 100 English characters.");
+                event.preventDefault();
+                titleInput.value = truncateToMaxLength(currentValue, maxMixedLength);
+            }
+        });
+
+
+        authorInput.addEventListener("input", function () {
+            const value = authorInput.value;
+            const { koreanCount } = validateLength(value);
+
+            if (koreanCount > 0 && value.length > maxAuthorLength) {
+                alert("Author name with Korean characters can only have a maximum of 10 characters.");
+                authorInput.value = truncateToMaxLength(value, maxAuthorLength);
+            }
+        });
+
+        authorInput.addEventListener("paste", function (event) {
+            const pasteData = (event.clipboardData || window.clipboardData).getData("text");
+            const currentValue = authorInput.value;
+            const newValue = currentValue + pasteData;
+
+            const { koreanCount } = validateLength(newValue);
+
+            if (koreanCount > 0 && newValue.length > maxAuthorLength) {
+                alert("Author name with Korean characters can only have a maximum of 10 characters.");
+                event.preventDefault();
+                authorInput.value = truncateToMaxLength(currentValue, maxAuthorLength);
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>

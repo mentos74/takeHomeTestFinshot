@@ -23,7 +23,7 @@ public class PostServicesImpl implements PostServices {
 
     @Override
     public List<PostResponseDTO> listPost() {
-        return postRepository.findByDeletedFalse().stream().map((post) -> {
+        return postRepository.findByDeletedFalseOrderByCreatedAtDesc().stream().map((post) -> {
             PostResponseDTO dto = new PostResponseDTO();
             dto.setPostId(post.getPostId());
             dto.setTitle(post.getTitle());
@@ -44,6 +44,7 @@ public class PostServicesImpl implements PostServices {
         post.setAuthor(dto.getAuthor());
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
+        post.setDeleted(false);
         postRepository.save(post);
 
     }
