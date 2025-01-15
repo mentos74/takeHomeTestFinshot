@@ -14,7 +14,7 @@ public interface PostServices {
 
     public List<PostResponseDTO> listPost();
     public void createNewPost(PostCreateRequestDTO dto);
-    public void updatePost(PostUpdateRequestDTO dto);
+    public void updatePost(PostUpdateRequestDTO dto, Long id);
     public void deletePost(Long id);
     public PostResponseDTO viewPost(Long id);
 

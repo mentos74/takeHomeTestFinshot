@@ -23,7 +23,7 @@ public class PostServicesImpl implements PostServices {
 
     @Override
     public List<PostResponseDTO> listPost() {
-        return postRepository.findAll().stream().map((post) -> {
+        return postRepository.findByDeletedFalse().stream().map((post) -> {
             PostResponseDTO dto = new PostResponseDTO();
             dto.setPostId(post.getPostId());
             dto.setTitle(post.getTitle());
@@ -49,8 +49,8 @@ public class PostServicesImpl implements PostServices {
     }
 
     @Override
-    public void updatePost(PostUpdateRequestDTO dto) {
-        Post post = postRepository.findById(dto.getPostId())
+    public void updatePost(PostUpdateRequestDTO dto, Long id) {
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         post.setTitle(dto.getTitle());
@@ -63,8 +63,9 @@ public class PostServicesImpl implements PostServices {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-     //TODO tambahin soft delete
-        postRepository.delete(post);
+        post.setDeleted(true);
+        postRepository.save(post);
+
     }
 
     @Override

@@ -23,4 +23,6 @@ public class PostUpdateRequestDTO {
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
+
+    private String password;
 }

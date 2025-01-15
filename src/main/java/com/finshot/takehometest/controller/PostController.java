@@ -51,40 +51,43 @@ public class PostController {
         return "redirect:/list";
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/view/{id}")
     public String viewPost(@PathVariable Long id, Model model) {
         PostResponseDTO post = postServices.viewPost(id);
         model.addAttribute("post", post);
         return "/post/view";
     }
 
+
+
     @GetMapping("/edit/{id}")
-    public String editPost(@PathVariable Long id, Model model) {
+    public String editNewPost(@PathVariable Long id, Model model) {
         PostResponseDTO post = postServices.viewPost(id);
 
-        PostUpdateRequestDTO updateRequest = new PostUpdateRequestDTO();
-        updateRequest.setPostId(post.getPostId());
-        updateRequest.setTitle(post.getTitle());
-        updateRequest.setContent(post.getContent());
-        updateRequest.setContent(post.getAuthor());
-        
-        model.addAttribute("postUpdateRequestDTO", updateRequest);
+        PostUpdateRequestDTO postUpdateRequestDTO = new PostUpdateRequestDTO();
+        postUpdateRequestDTO.setPostId(post.getPostId());
+        postUpdateRequestDTO.setTitle(post.getTitle());
+        postUpdateRequestDTO.setContent(post.getContent());
+        postUpdateRequestDTO.setAuthor(post.getAuthor());
+        postUpdateRequestDTO.setPassword(post.getPassword());
+
+        model.addAttribute("postUpdateRequestDTO", postUpdateRequestDTO);
         return "/post/edit";
     }
 
-    @PostMapping("/edit")
-    public String updatePost(@ModelAttribute("postUpdateRequestDTO") @Valid PostUpdateRequestDTO updateRequestDTO,
+    @PostMapping("/edit/{id}")
+    public String updatePost(@PathVariable Long id, @ModelAttribute("postUpdateRequestDTO") @Valid PostUpdateRequestDTO postUpdateRequestDTO,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("postUpdateRequestDTO", updateRequestDTO);
+            model.addAttribute("postUpdateRequestDTO", postUpdateRequestDTO);
             return "/post/edit";
         }
 
-        postServices.updatePost(updateRequestDTO);
+        postServices.updatePost(postUpdateRequestDTO, id);
         return "redirect:/list";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable Long id) {
         postServices.deletePost(id);
         return "redirect:/list";

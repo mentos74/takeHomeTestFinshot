@@ -38,6 +38,9 @@
 
         public String password;
 
+        @Column(nullable = false, columnDefinition = "boolean default false")
+        public Boolean deleted;
+
 
         @PrePersist
         public void prePersist() {

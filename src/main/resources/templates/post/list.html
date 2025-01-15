@@ -7,10 +7,9 @@
 </head>
 
 <body class="container mt-5">
-<!-- Tambahkan kelas text-center untuk memusatkan judul -->
 <h1 class="mb-4 text-center">Bulletin Board</h1>
 
-<!-- Wrapper tombol Add New Post -->
+
 <div class="d-flex justify-content-end mb-3">
     <a href="/add" class="btn btn-primary">Add New Post</a>
 </div>
@@ -28,7 +27,7 @@
     <tbody>
     <tr th:each="post, iterStat : ${posts}">
         <td th:text="${iterStat.index + 1}"></td>
-        <td><a th:href="@{/post/{id}(id=${post.postId})}" th:text="${post.title}"></a></td>
+        <td><a th:href="@{/view/{id}(id=${post.postId})}" th:text="${post.title}"></a></td>
         <td th:text="${post.author}"></td>
         <td th:text="${post.views}"></td>
         <td th:text="${post.formattedCreatedDate}"></td>
