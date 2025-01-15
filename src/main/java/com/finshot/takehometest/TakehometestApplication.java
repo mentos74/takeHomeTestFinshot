@@ -8,7 +8,6 @@ public class TakehometestApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TakehometestApplication.class, args);
-		System.out.println("hello world take home test finshoot");
 	}
 
 }

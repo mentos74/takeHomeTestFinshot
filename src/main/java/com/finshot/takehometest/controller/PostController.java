@@ -101,10 +101,34 @@ public class PostController {
 
 
     @GetMapping("/delete/{id}")
-    public String deletePost(@PathVariable Long id) {
+    public String showDeleteConfirmation(@PathVariable Long id, Model model) {
+
+        PostResponseDTO post = postServices.viewPost(id);
+        model.addAttribute("post", post);
+        return "/post/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deletePostWithValidation(@PathVariable Long id,
+                                           @RequestParam("password") String password,
+                                           Model model) {
+
+        String existingPassword = postServices.checkPasswordExist(id);
+
+
+        if (!existingPassword.equals(password)) {
+            model.addAttribute("errorMessage", "Password is incorrect");
+            model.addAttribute("post", postServices.viewPost(id));
+            return "/post/delete";
+        }
+
         postServices.deletePost(id);
         return "redirect:/list";
     }
+
+
+
+
 
 
 }
