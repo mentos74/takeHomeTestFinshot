@@ -32,6 +32,7 @@ public class PostServicesImpl implements PostServices {
             dto.setViews(post.getViews());
             dto.setCreatedAt(post.getCreatedAt());
             dto.setModifiedAt(post.getModifiedAt());
+            dto.setPassword(post.getPassword());
             dto.setFormattedCreatedDate(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             dto.setFormattedModifiedAt(post.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             return dto;
@@ -44,6 +45,7 @@ public class PostServicesImpl implements PostServices {
         post.setAuthor(dto.getAuthor());
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
+        post.setPassword(dto.getPassword());
         post.setDeleted(false);
         postRepository.save(post);
 
@@ -56,6 +58,7 @@ public class PostServicesImpl implements PostServices {
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
+        post.setAuthor(dto.getAuthor());
         postRepository.save(post);
     }
 
@@ -73,9 +76,7 @@ public class PostServicesImpl implements PostServices {
     public PostResponseDTO viewPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Post not found"));
-        post.setViews(post.getViews()+1);
 
-        postRepository.save(post);
 
         PostResponseDTO dto = new PostResponseDTO();
         dto.setPostId(post.getPostId());
@@ -85,9 +86,26 @@ public class PostServicesImpl implements PostServices {
         dto.setViews(post.getViews());
         dto.setCreatedAt(post.getCreatedAt());
         dto.setModifiedAt(post.getModifiedAt());
+        dto.setPassword(post.getPassword());
         dto.setFormattedCreatedDate(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         dto.setFormattedModifiedAt(post.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return dto;
+    }
+
+    @Override
+    public String checkPasswordExist(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        return post.getPassword();
+    }
+
+    @Override
+    public void countViews(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Post not found"));
+        post.setViews(post.getViews()+1);
+
+        postRepository.save(post);
     }
 
 }

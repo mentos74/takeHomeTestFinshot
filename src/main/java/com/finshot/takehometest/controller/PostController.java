@@ -54,6 +54,7 @@ public class PostController {
     @GetMapping("/view/{id}")
     public String viewPost(@PathVariable Long id, Model model) {
         PostResponseDTO post = postServices.viewPost(id);
+        postServices.countViews(id);
         model.addAttribute("post", post);
         return "/post/view";
     }
@@ -76,9 +77,18 @@ public class PostController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updatePost(@PathVariable Long id, @ModelAttribute("postUpdateRequestDTO") @Valid PostUpdateRequestDTO postUpdateRequestDTO,
+    public String updatePost(@PathVariable Long id,
+                             @ModelAttribute("postUpdateRequestDTO") @Valid PostUpdateRequestDTO postUpdateRequestDTO,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("postUpdateRequestDTO", postUpdateRequestDTO);
+            return "/post/edit";
+        }
+
+        String existingPassword = postServices.checkPasswordExist(id);
+
+        if (!existingPassword.equals(postUpdateRequestDTO.getPassword())) {
+            bindingResult.rejectValue("password", "error.password", "Password is incorrect");
             model.addAttribute("postUpdateRequestDTO", postUpdateRequestDTO);
             return "/post/edit";
         }
@@ -86,6 +96,9 @@ public class PostController {
         postServices.updatePost(postUpdateRequestDTO, id);
         return "redirect:/list";
     }
+
+
+
 
     @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable Long id) {

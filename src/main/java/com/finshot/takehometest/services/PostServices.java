@@ -17,5 +17,7 @@ public interface PostServices {
     public void updatePost(PostUpdateRequestDTO dto, Long id);
     public void deletePost(Long id);
     public PostResponseDTO viewPost(Long id);
+    public String checkPasswordExist(Long id);
+    public void countViews(Long id);
 
 }

@@ -10,9 +10,12 @@
 <h1 class="mb-4 text-center">Edit Post</h1>
 <form method="POST" th:action="@{'/edit/' + ${postUpdateRequestDTO.postId}}" th:object="${postUpdateRequestDTO}"
       class="needs-validation" novalidate>
+
+    <input type="hidden" name="postId" th:field="*{postId}" />
+
     <div class="mb-3">
         <label for="author" class="form-label"><b>Author Name</b></label>
-        <input type="text" id="author" name="author" class="form-control" th:field="*{author}" maxlength="10" required>
+        <input type="text" id="author" name="author" class="form-control" th:field="*{author}" required>
         <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="text-danger"></div>
     </div>
     <div class="mb-3">
@@ -35,6 +38,7 @@
         <a th:href="@{'/view/' +${postUpdateRequestDTO.postId}}" class="btn btn-secondary ms-2">Cancel</a>
     </div>
 </form>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
