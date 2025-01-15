@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,12 +36,12 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public String addNewPost(@ModelAttribute("postCreateRequestDTO") @Valid PostCreateRequestDTO postCreateRequestDTO,
-                             BindingResult bindingResult,
-                             Errors errors,
-                             Model model) {
+    public String addNewPost(
+            @ModelAttribute("postCreateRequestDTO") @Valid PostCreateRequestDTO postCreateRequestDTO,
+            BindingResult bindingResult,
+            Model model) {
 
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("postCreateRequestDTO", postCreateRequestDTO);
             return "/post/add";
         }
@@ -51,10 +50,11 @@ public class PostController {
         return "redirect:/list";
     }
 
+
     @GetMapping("/view/{id}")
     public String viewPost(@PathVariable Long id, Model model) {
-        PostResponseDTO post = postServices.viewPost(id);
         postServices.countViews(id);
+        PostResponseDTO post = postServices.viewPost(id);
         model.addAttribute("post", post);
         return "/post/view";
     }

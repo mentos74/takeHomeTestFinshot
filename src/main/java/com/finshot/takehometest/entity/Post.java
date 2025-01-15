@@ -1,55 +1,55 @@
-    package com.finshot.takehometest.entity;
+package com.finshot.takehometest.entity;
 
-    import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-    import com.fasterxml.jackson.databind.annotation.JsonNaming;
-    import jakarta.persistence.*;
-    import lombok.Data;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.persistence.*;
+import lombok.Data;
 
-    import java.io.Serial;
-    import java.io.Serializable;
-    import java.time.LocalDateTime;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-    @Data
-    @Entity
-    @Table(name = "posts")
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public class Post implements Serializable {
+@Data
+@Entity
+@Table(name = "posts")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class Post implements Serializable {
 
-        @Serial
-        private static final long serialVersionUID = -7889938648939242355L;
+    @Serial
+    private static final long serialVersionUID = -7889938648939242355L;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        public Long postId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long postId;
 
-        public String title;
+    private String title;
 
-        public String author;
+    private String author;
 
-        @Column(columnDefinition="text")
-        public String content;
+    @Column(columnDefinition = "text")
+    public String content;
 
-        @Column(nullable = false, columnDefinition = "int default 0")
-        public int views;
+    @Column(nullable = false, columnDefinition = "int default 0")
+    public int views;
 
-        public LocalDateTime createdAt;
+    public LocalDateTime createdAt;
 
-        public LocalDateTime modifiedAt;
+    public LocalDateTime modifiedAt;
 
-        public String password;
+    private String password;
 
-        @Column(columnDefinition = "boolean default false")
-        public Boolean deleted;
+    @Column(columnDefinition = "boolean default false")
+    public Boolean deleted;
 
 
-        @PrePersist
-        public void prePersist() {
-            this.createdAt = LocalDateTime.now();
-            this.modifiedAt = LocalDateTime.now();
-        }
-
-        @PreUpdate
-        public void preUpdate() {
-            this.modifiedAt = LocalDateTime.now();
-        }
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.modifiedAt = LocalDateTime.now();
+    }
+}

@@ -3,7 +3,6 @@ package com.finshot.takehometest.services;
 import com.finshot.takehometest.dto.PostCreateRequestDTO;
 import com.finshot.takehometest.dto.PostResponseDTO;
 import com.finshot.takehometest.dto.PostUpdateRequestDTO;
-import com.finshot.takehometest.entity.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
