@@ -27,4 +27,6 @@ public class PostResponseDTO {
     private String formattedCreatedDate;
 
     private String formattedModifiedAt;
+
+    private String password;
 }

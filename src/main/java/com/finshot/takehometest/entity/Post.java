@@ -26,14 +26,18 @@
 
         public String author;
 
+        @Column(columnDefinition="text")
         public String content;
 
         @Column(nullable = false, columnDefinition = "int default 0")
-        public int views = 0;
+        public int views;
 
         public LocalDateTime createdAt;
 
         public LocalDateTime modifiedAt;
+
+        public String password;
+
 
         @PrePersist
         public void prePersist() {

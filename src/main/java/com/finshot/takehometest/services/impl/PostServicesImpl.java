@@ -32,6 +32,8 @@ public class PostServicesImpl implements PostServices {
             dto.setViews(post.getViews());
             dto.setCreatedAt(post.getCreatedAt());
             dto.setModifiedAt(post.getModifiedAt());
+            dto.setFormattedCreatedDate(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            dto.setFormattedModifiedAt(post.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             return dto;
         }).collect(Collectors.toList());
     }
@@ -69,7 +71,7 @@ public class PostServicesImpl implements PostServices {
     public PostResponseDTO viewPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Post not found"));
-        post.setViews(post.getViews() );
+        post.setViews(post.getViews()+1);
 
         postRepository.save(post);
 
