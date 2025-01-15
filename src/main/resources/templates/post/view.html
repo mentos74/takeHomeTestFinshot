@@ -13,6 +13,11 @@
 </head>
 
 <body class="container mt-5">
+<div class="d-flex justify-content-end mb-3">
+    <a href="/edit/{id}" th:href="@{/edit/{id}(id=${post.postId})}" class="btn btn-warning ms-2">Edit</a>
+    <a href="/delete/{id}" th:href="@{/delete/{id}(id=${post.postId})}" class="btn btn-danger ms-2">Delete</a>
+    <a href="/list" class="btn btn-secondary ms-2">Back to List</a>
+</div>
 <h1 class="mb-4 text-center" th:text="${post.title}"></h1>
 <p><b>Author:</b> <span th:text="${post.author}"></span></p>
 <p><b>Views:</b> <span th:text="${post.views}"></span></p>
@@ -26,11 +31,7 @@
 <hr>
 <p class="content-text" th:text="${post.content}"></p>
 
-<div class="d-flex justify-content-end mb-3">
-    <a href="/edit/{id}" th:href="@{/edit/{id}(id=${post.postId})}" class="btn btn-warning ms-2">Edit</a>
-    <a href="/delete/{id}" th:href="@{/delete/{id}(id=${post.postId})}" class="btn btn-danger ms-2">Delete</a>
-    <a href="/list" class="btn btn-secondary ms-2">Back to List</a>
-</div>
+
 
 </body>
 
