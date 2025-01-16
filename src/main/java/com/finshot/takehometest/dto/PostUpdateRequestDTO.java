@@ -2,6 +2,7 @@ package com.finshot.takehometest.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,11 @@ public class PostUpdateRequestDTO {
 
     private Long postId;
 
+    @NotBlank(message = "Title must be filled")
     private String title;
+
+    @NotBlank(message = "Password must be filled")
+    private String password;
 
     private String author;
 
@@ -24,5 +29,5 @@ public class PostUpdateRequestDTO {
 
     private LocalDateTime modifiedAt;
 
-    private String password;
+
 }

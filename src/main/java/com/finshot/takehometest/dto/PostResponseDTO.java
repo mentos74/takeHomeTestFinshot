@@ -29,4 +29,8 @@ public class PostResponseDTO {
     private String formattedModifiedAt;
 
     private String password;
+
+    private String trimmedTitle;
+
+    private String trimmedAuthor;
 }

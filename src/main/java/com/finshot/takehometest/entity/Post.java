@@ -22,8 +22,10 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long postId;
 
+    @Column(columnDefinition = "text")
     private String title;
 
+    @Column(columnDefinition = "text")
     private String author;
 
     @Column(columnDefinition = "text")
@@ -36,6 +38,7 @@ public class Post implements Serializable {
 
     public LocalDateTime modifiedAt;
 
+    @Column(columnDefinition = "text")
     private String password;
 
     @Column(columnDefinition = "boolean default false")

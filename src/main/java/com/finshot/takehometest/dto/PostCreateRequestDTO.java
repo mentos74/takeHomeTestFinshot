@@ -13,10 +13,10 @@ public class PostCreateRequestDTO {
 
     private Long postId;
 
-    @NotBlank(message = "Title tidak boleh kosong")
+    @NotBlank(message = "Title must be filled")
     private String title;
 
-    @NotBlank(message = "Password tidak boleh kosong")
+    @NotBlank(message = "Password must be filled")
     private String password;
 
     private String author;

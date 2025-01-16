@@ -25,10 +25,29 @@ public class PostServicesImpl implements PostServices {
     public List<PostResponseDTO> listPost() {
         return postRepository.findByDeletedFalseOrderByCreatedAtDesc().stream().map((post) -> {
             PostResponseDTO dto = new PostResponseDTO();
+
+            String title = post.getTitle();
+            if (title.matches(".*[가-힣].*")) {
+                dto.setTrimmedTitle(title.substring(0, Math.min(title.length(), 50)));
+            } else {
+                dto.setTrimmedTitle(title.substring(0, Math.min(title.length(), 100)));
+            }
+
+            String author = post.getAuthor();
+            if (author.matches(".*[가-힣].*")) {
+                dto.setTrimmedAuthor(author.substring(0, Math.min(author.length(), 10)));
+            } else {
+                dto.setTrimmedAuthor(author);
+            }
+
+            System.out.println("trimmed1 >>"+dto.getTrimmedAuthor());
+            System.out.println("trimmed2 >>"+dto.getTrimmedTitle());
+
+
             dto.setPostId(post.getPostId());
+            dto.setAuthor(post.getAuthor());
             dto.setTitle(post.getTitle());
             dto.setContent(post.getContent());
-            dto.setAuthor(post.getAuthor());
             dto.setViews(post.getViews());
             dto.setCreatedAt(post.getCreatedAt());
             dto.setModifiedAt(post.getModifiedAt());
